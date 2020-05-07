@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -18,7 +19,7 @@ public class SearchServiceTest {
 
     @Before
     public void getFile() throws Exception {
-        file = new File("src/test/resources/TestSample.txt");
+        file = new File("src/main/resources/test/TestSample.txt");
     }
 
     @Test
@@ -27,6 +28,15 @@ public class SearchServiceTest {
         String content = "";
         content = searchServiceImpl.readFile(file);
         assertNotNull(content);
+
+    }
+
+    @Test(expected = NoSuchFileException.class)
+    public void readFile_whenFileNotPresent() throws Exception {
+
+        String content = "";
+        File noFile = new File("src/main/resources/test/T.txt");
+        content = searchServiceImpl.readFile(noFile);
 
     }
 
