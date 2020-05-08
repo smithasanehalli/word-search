@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/counter-api")
-public class SearchControler {
+public class SearchController {
 
     @Autowired
     private SearchService searchService;
 
-    @Value("classpath:static/Sample.txt")
+    @Value("classpath:static/Sample1.txt")
     Resource resourceFile;
 
     @GetMapping(path = "/paragraph",

@@ -53,7 +53,7 @@ public class SearchServiceTest {
 
     @Test
     public void searchWords_whichAreNotPresentInFile() throws Exception {
-        SearchServiceImpl searchServiceImpl = new SearchServiceImpl();
+
         Map<String, Integer> actualResult = null;
         String[] searchArray = {"xxx", "yyy"};
         List<String> searchList = Arrays.asList(searchArray);

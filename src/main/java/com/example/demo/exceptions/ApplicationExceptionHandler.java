@@ -1,6 +1,6 @@
 package com.example.demo.exceptions;
 
-import com.example.demo.model.response.ErrorMessage;
+import com.example.demo.model.response.ErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handelAnyException(Exception exception, WebRequest webRequest) {
 
-        ErrorMessage erorMessage = new ErrorMessage(
+        ErrorResponse erorMessage = new ErrorResponse(
                 new Date(),
                 exception.getLocalizedMessage() == null ? exception.toString() : exception.getLocalizedMessage());
         return new ResponseEntity<>(erorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -26,7 +26,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler(value = {NullPointerException.class, UserServiceException.class})
     public ResponseEntity<Object> handelSpecificException(Exception exception, WebRequest webRequest) {
 
-        ErrorMessage erorMessage = new ErrorMessage(
+        ErrorResponse erorMessage = new ErrorResponse(
                 new Date(),
                 exception.getLocalizedMessage() == null ? exception.toString() : exception.getLocalizedMessage());
         return new ResponseEntity<>(erorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);

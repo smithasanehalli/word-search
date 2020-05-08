@@ -2,15 +2,15 @@ package com.example.demo.model.response;
 
 import java.util.Date;
 
-public class ErrorMessage {
+public class ErrorResponse {
     private Date timeStamp;
     private String message;
 
-    public ErrorMessage() {
+    public ErrorResponse() {
 
     }
 
-    public ErrorMessage(Date timeStamp, String message) {
+    public ErrorResponse(Date timeStamp, String message) {
         this.timeStamp = timeStamp;
         this.message = message;
     }
