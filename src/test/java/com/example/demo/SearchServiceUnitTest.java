@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import com.example.demo.services.SearchServiceImpl;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -11,42 +10,30 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-public class SearchServiceTest {
+public class SearchServiceUnitTest {
 
-    File file = null;
+    public static File file = new File("src/main/resources/test/testSample.txt");
     SearchServiceImpl searchServiceImpl = new SearchServiceImpl();
-
-
-    @Before
-    public void getFile() throws Exception {
-        file = new File("src/main/resources/test/TestSample.txt");
-    }
 
     @Test
     public void readFile_isContentNotnull() throws Exception {
 
-        String content = "";
-        content = searchServiceImpl.readFile(file);
-        assertNotNull(content);
+        assertNotNull(searchServiceImpl.readFile(file));
 
     }
 
     @Test(expected = NoSuchFileException.class)
     public void readFile_whenFileNotPresent() throws Exception {
 
-        String content = "";
-        File noFile = new File("src/main/resources/test/T.txt");
-        content = searchServiceImpl.readFile(noFile);
+        searchServiceImpl.readFile(new File("src/main/resources/test/T.txt"));
 
     }
 
     @Test
     public void searchWords_withEmptyString() throws Exception {
 
-        Map<String, Integer> actualResult = null;
-        String[] searchArray = {""};
-        List<String> searchList = Arrays.asList(searchArray);
-        actualResult = searchServiceImpl.searchWords(searchList, file);
+        List<String> searchList = Arrays.asList(new String[]{""});
+        Map<String, Integer> actualResult = searchServiceImpl.searchWords(searchList, file);
         assertTrue(actualResult.isEmpty());
 
     }
@@ -54,11 +41,10 @@ public class SearchServiceTest {
     @Test
     public void searchWords_whichAreNotPresentInFile() throws Exception {
 
-        Map<String, Integer> actualResult = null;
         String[] searchArray = {"xxx", "yyy"};
         List<String> searchList = Arrays.asList(searchArray);
 
-        actualResult = searchServiceImpl.searchWords(searchList, file);
+        Map<String, Integer> actualResult = searchServiceImpl.searchWords(searchList, file);
         assertEquals(0, actualResult.values().stream().reduce(0, Integer::sum).intValue());
 
     }
@@ -66,11 +52,10 @@ public class SearchServiceTest {
     @Test
     public void searchWords_whichArePresentInFile() throws Exception {
 
-        Map<String, Integer> actualResult = null;
         String[] searchArray = {"duis", "sed", "donec", "augue", "pellentesque", "123"};
         List<String> searchList = Arrays.asList(searchArray);
 
-        actualResult = searchServiceImpl.searchWords(searchList, file);
+        Map<String, Integer> actualResult = searchServiceImpl.searchWords(searchList, file);
         System.out.println(actualResult.toString());
 
         assertEquals(11, actualResult.get("duis").intValue());
@@ -91,7 +76,6 @@ public class SearchServiceTest {
     @Test
     public void topxWordCount_positiveCase() throws IOException {
         File output = searchServiceImpl.topxWordCount(1, file);
-
         Scanner scanner = new Scanner(output);
         String firstLine = scanner.nextLine();
         assertTrue(firstLine.contains("eget|17"));

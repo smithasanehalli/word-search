@@ -15,18 +15,17 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService {
     /**
      * Reads text file from resource static folder
+     *
      * @return content as String
      */
     @Override
     public String readFile(File file) throws IOException {
-        String content = "";
-            //Read File Content
-            content = new String(Files.readAllBytes(file.toPath()));
+        //Read File Content
+        String content = new String(Files.readAllBytes(file.toPath()));
         return content;
     }
 
     /**
-     *
      * @param searchList - list of words to be searched
      * @return word count map
      */
@@ -53,6 +52,7 @@ public class SearchServiceImpl implements SearchService {
 
     /**
      * Reads the complete text file and count number of unique words
+     *
      * @return map of all words count
      */
     public Map<String, Integer> wordCount(File file) throws IOException {
@@ -80,8 +80,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     /**
-     *
-     * @param x - Number of words
+     * @param x    - Number of words
      * @param file - file to search
      * @return top X word count
      */
@@ -108,13 +107,11 @@ public class SearchServiceImpl implements SearchService {
 
         File resultFile = new File("result.txt");
 
-        FileWriter fw = null;
-        BufferedWriter bw = null;
         try {
-            fw = new FileWriter(resultFile.getAbsoluteFile(), false);
-            bw = new BufferedWriter(fw);
+            FileWriter fw = new FileWriter(resultFile.getAbsoluteFile(), false);
+            BufferedWriter bw = new BufferedWriter(fw);
             bw.write(sb.toString());
-            bw.close(); // Be sure to close BufferedWriter
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -25,9 +24,9 @@ import java.util.stream.Collectors;
 public class SearchController {
 
     @Autowired
-    private SearchService searchService;
+    SearchService searchService;
 
-    @Value("classpath:static/Sample1.txt")
+    @Value("classpath:static/sample.txt")
     Resource resourceFile;
 
     @GetMapping(path = "/paragraph",
@@ -35,34 +34,25 @@ public class SearchController {
                     MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> getParagraph() {
 
-        File file = null;
-        String content = "";
         try {
-            file = resourceFile.getFile();
-            content = searchService.readFile(file);
+            String content = searchService.readFile(resourceFile.getFile());
             return new ResponseEntity(content, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-
-
     }
-
 
     @PostMapping(
             path = "/search",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<SearchResponse> search(
-            @Valid @RequestBody SearchRequest searchRequest) {
+            @RequestBody SearchRequest searchRequest) {
         SearchResponse searchResponse = new SearchResponse();
 
-        File file = null;
         try {
-            file = resourceFile.getFile();
-
-            Map<String, Integer> map = searchService.searchWords(searchRequest.getSearchText(), file);
+            Map<String, Integer> map = searchService.searchWords(searchRequest.getSearchText(), resourceFile.getFile());
             List<Map.Entry<String, Integer>> listOfMap = map.entrySet()
                     .stream()
                     .collect(Collectors.toList());
@@ -72,9 +62,7 @@ public class SearchController {
             e.printStackTrace();
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-
     }
-
 
     @GetMapping(value = "/top/{value}", produces = "text/csv")
     public ResponseEntity generateReport(@PathVariable Integer value) {
@@ -91,7 +79,5 @@ public class SearchController {
             e.printStackTrace();
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-
     }
-
 }
